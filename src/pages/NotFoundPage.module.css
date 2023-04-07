@@ -1,0 +1,25 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "source sans pro", "sans-serif";
+}
+
+.center {
+  display: grid;
+  place-content: center;
+}
+
+.link {
+  background-color: #fe696a;
+  color: white;
+  padding: 15px;
+  text-decoration: none;
+  font-size: 24px;
+  font-weight: 600;
+  border-radius: 8px;
+}
+
+.link:hover {
+  background-color: #f85b5c;
+}

@@ -1,24 +1,37 @@
-import logo from './logo.svg';
-import './App.css';
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import LoginPage from "./pages/LoginPage";
+import NotFoundPage from "./pages/NotFoundPage";
+import RoomPage from "./pages/RoomPage";
+import ChatPage from "./pages/ChatPage";
+import UsersAPI from "./api/UsersAPI";
 
 function App() {
+  const stateUsers = UsersAPI();
+  const [token, setToken] = stateUsers.token;
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <BrowserRouter>
+      <Routes>        
+        <Route
+          exact
+          path="/"
+          element={
+            token ? <Navigate to="/room" /> : <Navigate to="/login" />
+          }
+        />
+
+        {token ? (
+          <>
+            <Route exact path="/room" element={<RoomPage />} />
+            <Route exact path="/chat/:roomId" element={<ChatPage />} />
+          </>
+        ) : (
+          <Route exact path="/login" element={<LoginPage />} />
+        )}
+
+        <Route path="*" element={<NotFoundPage />} />
+      </Routes>
+    </BrowserRouter>
   );
 }
 
