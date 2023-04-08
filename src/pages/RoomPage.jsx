@@ -1,23 +1,21 @@
 import React, { useCallback, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import RoomsAPI from "../api/RoomsAPI";
 import UsersAPI from "../api/UsersAPI";
 // import { Link } from "react-router-dom";
 
 const RoomPage = () => {
-  const stateRooms = RoomsAPI();
-  const [rooms, setRooms] = stateRooms.rooms;
   const stateUsers = UsersAPI();
   const [currentUser, setCurrentUser] = stateUsers.currentUser;
+  const [users, setUsers] = stateUsers.users;
   const navigate = useNavigate();
-  const roomRef = useRef();
+  const userRef = useRef();
   
   const handleSubmit = useCallback(async (e) => {
     e.preventDefault();
-    const room = rooms.find((room) => room.name === roomRef.current.value);
+    const user = users.find((user) => user.name === userRef.current.value);
 
-    navigate(`/chat/${room._id}`);
-  }, [rooms]);
+    navigate(`/chat/${user._id}`);
+  }, [users]);
   
   return (
     <div className="join-container">
@@ -40,10 +38,10 @@ const RoomPage = () => {
             />
           </div>
           <div className="form-control">
-            <label htmlFor="room">Room</label>
-            <select ref={roomRef} name="room" id="room">
+            <label htmlFor="room">Chat With</label>
+            <select ref={userRef} name="user" id="user">
               {
-                rooms.map(room => <option key={room._id} defaultValue={room.name}>{room.name}</option>)
+                users?.map(user => <option key={user._id} defaultValue={user.name}>{user.name}</option>)
               }
             </select>
           </div>

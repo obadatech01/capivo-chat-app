@@ -8,18 +8,23 @@ import baseURL from "../api/baseURL";
 const ChatPage = () => {
   const navigate = useNavigate();
   const [singleChat, setSingleChat] = useState(''); 
-  const { roomId } = useParams();
-  const stateChats = ChatsAPI(roomId);
+  const { userId } = useParams();
+  const stateChats = ChatsAPI(userId);
   const [chats, setChats] = stateChats.chats; 
   const stateUsers = UsersAPI();
   const [currentUser, setCurrentUser] = stateUsers.currentUser;
+  const [users, setUsers] = stateUsers.users;
   const chatMessagesRef = useRef(null);
   
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await baseURL.post(`/api/v1/chat/${roomId}`, {
-        message: singleChat
+      await baseURL.post(`/api/v1/chat/`, {
+        receiver: userId,
+        message: singleChat,
+        isTyping: false,
+        isDelivered: true,
+        isRead: true
       },{
         headers: {
           Authorization: `Bearer ${JSON.parse(
@@ -61,14 +66,14 @@ const ChatPage = () => {
       <main className="chat-main">
         <div className="chat-sidebar">
           <h3>
-            <i className="fas fa-comments" /> Room Name:
+            <i className="fas fa-comments" /> Sender:
           </h3>
-          <h2 id="room-name">{chats[0]?.room.name}</h2>
+          <h2 id="room-name">{currentUser?.name}</h2>
           <h3>
             <i className="fas fa-users" /> Users
           </h3>
           <ul id="users">
-            {chats[0]?.room.members.map((user) => (
+            {users?.map((user) => (
               <li key={user._id} className={user._id === currentUser?._id ? 'currentUser' : ''}>{user.name} {user._id === currentUser?._id ? ' - You' : ''}</li>
             ))}
             <li></li>
@@ -81,7 +86,7 @@ const ChatPage = () => {
               Chat Bot <span>{moment().format('YYYY-mm-DD h:mm a')}</span>
             </p>
             <p className="text">
-              Welcome in {chats[0]?.room.name} room.
+              Welcome in {chats[0]?.receiver.name} room.
             </p>
           </div>
           {

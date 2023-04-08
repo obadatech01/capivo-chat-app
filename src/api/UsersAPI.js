@@ -8,7 +8,7 @@ function UsersAPI() {
 
   useEffect(() => {
     const getUsers = async () => {
-      const res = await baseURL.get("/api/v1/auth/profile", {
+      const res = await baseURL.get("/api/v1/auth/users", {
         headers: {
           Authorization: `Bearer ${JSON.parse(
             localStorage.getItem("tokenCapivo")

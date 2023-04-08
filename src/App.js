@@ -23,7 +23,7 @@ function App() {
         {token ? (
           <>
             <Route exact path="/room" element={<RoomPage />} />
-            <Route exact path="/chat/:roomId" element={<ChatPage />} />
+            <Route exact path="/chat/:userId" element={<ChatPage />} />
           </>
         ) : (
           <Route exact path="/login" element={<LoginPage />} />
